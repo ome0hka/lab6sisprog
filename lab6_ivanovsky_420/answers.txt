@@ -1,0 +1,136 @@
+Часть 1:
+1. 
+Command:
+    echo $$  
+Vivod:
+    1934
+
+2. 
+Command:
+    ls /proc 
+Vivod:
+    1     3151  596   bootconfig  cpuinfo    dynamic_debug  iomem      keys           loadavg  mounts        schedstat  swaps          tty                zoneinfo
+1067  34    6     buddyinfo   crypto     execdomains    ioports    kmsg           locks    mtrr          scsi       sys            uptime
+1620  413   620   bus         devices    fb             irq        kpagecgroup    mdstat   net           self       sysrq-trigger  version
+1680  442   635   cgroups     diskstats  filesystems    kallsyms   kpagecount     meminfo  pagetypeinfo  slabinfo   sysvipc        version_signature
+1934  57    73    cmdline     dma        fs             kcore      kpageflags     misc     partitions    softirqs   thread-self    vmallocinfo
+3149  586   acpi  consoles    driver     interrupts     key-users  latency_stats  modules  pressure      stat       timer_list     vmstat
+
+3. 
+Command:
+    cd /proc/$$
+    ls
+Vivod:
+    arch_status  clear_refs          cpuset   fdinfo             latency    mem         ns             pagemap      sched      smaps_rollup  syscall         uid_map
+attr         cmdline             cwd      gid_map            limits     mountinfo   numa_maps      patch_state  schedstat  stack         task            wchan
+autogroup    comm                environ  io                 loginuid   mounts      oom_adj        personality  sessionid  stat          timens_offsets
+auxv         coredump_filter     exe      ksm_merging_pages  map_files  mountstats  oom_score      projid_map   setgroups  statm         timers
+cgroup       cpu_resctrl_groups  fd       ksm_stat           maps       net         oom_score_adj  root         smaps      status        timerslack_ns
+
+4. 
+Command:
+    ls /proc/$$/fd
+Vivod:
+    0  1  2  255  6
+
+Часть 2:
+1. 
+Command:
+    echo "Привет мир"
+Vivod:
+    Привет мир
+
+2:
+Command:
+    ls blabla 2> errors.txt
+Vivod:
+    (пусто — ошибка ушла в файл errors.txt, а не на экран)
+
+3. 
+Command:
+    ls /home > output.txt 2> errors.txt
+Vivod:
+    codespace
+    vscode
+
+4. 
+Command:
+    cat output.txt
+    cat errors.txt
+Vivod:
+    codespace
+    vscode
+    (errors.txt пустой — ошибок не было)
+
+otvet:
+    Потоки stdout и stderr можно разделить, потому что у них разные дескрипторы (1 и 2),
+     и ОС позволяет направлять каждый в своё место независимо.
+
+Часть 3.
+1.
+Command:
+    gcc file_demo.c -o file_demo
+    ./file_demo
+Vivod:
+    VSE OK!
+
+Command:
+    cat myfile.txt
+Vivod:
+    Hello
+
+Otvet:
+Права 644 означают: владелец может читать и писать,
+остальные только читать. Если fd == -1 — файл не открылся,
+вызываем perror() чтобы вывести ошибку.
+
+chast4:
+
+
+Command:
+    gcc main.c filelib.c -o app
+    ./app
+    cat log.txt
+Vivod:
+    Start
+    Success!
+
+
+Chast 5.
+
+Command:
+    make clean
+    make
+    make run
+    cat log.txt
+Vivod:
+    1)rm -f app *.txt
+    2)gcc main.c filelib.c -o app
+    3)./app
+    4)  Start
+        Success!
+
+chast 6.
+
+Пересобрал main.c
+
+В итоге вот что получилось:
+
+make
+
+
+Com: ./app > out.txt 2> err.txt
+Vivod: gcc main.c filelib.c -o app
+
+Com: ./app > all.txt 2>&1
+Vivod: 
+
+Com: cat out.txt
+Vivod: Это обычный вывод (stdout)
+
+Com: cat err.txt
+Vivod: Сообщение ошибки (stderr)
+
+Com: cat all.txt
+Vivod: Сообщение ошибки (stderr)
+        Это обычный вывод (stdout)  
